@@ -1,0 +1,298 @@
+%%{
+  init: {
+    'flowchart': {
+      'nodeSpacing': 30,
+      'rankSpacing': 20,
+      'padding': 5,
+      'curve': 'basis',
+      'ranksep': 15,
+      'splines': 'polyline',
+      'pack': true
+    }
+  }
+}%%
+
+flowchart TD
+    RP[Residential Property] --> PLP[Property Level Protection]
+    RP --> EPC[EPC Rating]
+    RP --> HC[Hazard Curve]
+    RP --> VC[Vulnerability Curve]
+
+    PLP --> TProt[Temporary Protection]
+    PLP --> PProt[Permanent Protection]
+    PLP --> NProt[Natural Protection]
+
+    subgraph "Protection Features"
+        TProt --> |External| EF1[External Fittings]
+        TProt --> |Internal| IF1[Internal Fittings]
+        
+        PProt --> |Construction| FRC[Flood Resilience Construction]
+        PProt --> |Internal| IF2[Internal Fittings]
+        PProt --> |External| EF2[External Fittings]
+        
+        NProt --> |Environmental| EnvF[Environmental Features]
+    
+    
+    
+    
+        IF1 --> EFBox[Internal Fittings Details]
+
+        subgraph EFBox[Internal Fittings Details]
+        direction TB
+        TOB[Toilet Bungs]
+        RDS[Removeable Door Seat]
+        
+        TOB --> RDS
+        end
+
+        EF1 --> EFBox2[External Fittings Details]
+
+        subgraph EFBox2[External Fittings Details]
+        direction TB
+        FB[Flood barriers or gates]
+        SB[Sandbags or water filled barriers]
+        FP1[Flood panels]
+        AC[Airbrick covers]
+        
+        FB --> SB
+        SB --> FP1
+        FP1 --> AC
+        end
+
+        IF2 --> EFBox3[Internal Fittings Details]
+
+        subgraph EFBox3[Internal Fittings Details]
+        direction TB
+        EVS[Elevated Electrical Sockets]
+        NRV[Non Return Value]
+        SPS[Sump Pump Systems]
+        WPF[Waterproof Flooring]
+        
+        EVS --> NRV
+        NRV --> SPS
+        SPS --> WPF
+
+
+        end
+
+        FRC --> EFBox4[Flood Resilience Details]
+
+        subgraph EFBox4[Flood Resilience Details]
+        direction TB
+        RTS[Raised Threshold Step]
+        WWS[Waterproof Wall Sealant]
+        CWM[Cavity Wall Membrane]
+        FDW[Flood Resilient Doors and Windows]
+        RFS[Raised Foundations and Stilts]
+        REF[Reinforced Walls]
+        
+        RTS --> WWS
+        WWS --> CWM
+        CWM --> FDW
+        FDW --> RFS
+        RFS --> REF
+
+        end
+
+        EF2 --> EFBox5[External Fittings Details]
+
+        subgraph EFBox5[External Fittings Details]
+        direction TB
+        PPD[Permeable Paving Driveway]
+        PDS[Proper Drainage Systems]
+        LWD[Landscaping for Water Diversion]
+
+        PPD --> PDS
+        PDS --> LWD
+        end
+
+        EnvF -->EFBox6[Environmental Features]
+
+        subgraph EFBox6[Environmental Features]
+        direction TB
+
+        RAG[Rain gardens]
+        DEP[Detention Ponds]
+        GRF[Green Roofs]
+        STP[Strategic tree planting]
+        BEL[Bioswales]
+        WST[Water Storage Tanks]
+
+        RAG -->DEP
+        DEP -->GRF
+        GRF --> STP
+        STP --> BEL
+        BEL --> WST
+
+        end
+    end
+    
+    HC --> HC1[Location]
+    HC --> HC2[Floor]
+    HC --> HC3[Surrounding Area]
+    HC --> HC4[Foundations]
+    
+    subgraph "Hazard Curve"
+        HC1 --> |Geospatial| HC11[Longitute and Latitude]
+        HC3 --> |Locality| HC31
+        
+        subgraph HC31[Surrounding Area]
+            direction TB
+            DFW[Distance from water]
+            NBT[Nearby topography]
+            HZP[Hazard parameters]
+            USR[Ubran, Suburban, Rural]
+            ELV[Elevation]
+            SOT[Soil type]
+            FLL[Floor level]
+
+
+            DFW --> NBT
+            NBT --> HZP
+            HZP -->USR
+            USR --> ELV
+            ELV --> SOT
+            SOT --> FLL
+
+        end
+    end
+
+    
+
+    VC --> VC1[Foundations]
+    VC --> VC2[Occupancy Type]
+
+    subgraph "Vulnerability Curve"
+
+        VC1 --> |Building Construction| VC11
+
+        subgraph VC11[Building Construction]
+        direction TB
+        HAG[Height above ground]
+        WBF[With basement flag]
+        FDT[Foundation Ttype]
+        CST[Construction type]
+        NOS[Number of stories]
+        
+
+        HAG -->WBF
+        WBF --> FDT
+        FDT --> CST
+        CST --> NOS
+
+
+        end
+
+        VC2 --> |Building Type| VC21
+
+        subgraph VC21[Building Type]
+        direction TB
+
+        OCC[Occupancy Ttype]
+        CVD[Content value density]
+        PMA[Property material]
+        PTT[Property type]
+        SQF[Square footage]
+        EXT[Extensions alterations]
+
+        OCC --> CVD
+        CVD --> PMA
+        PMA --> PTT
+        PTT --> SQF
+        SQF --> EXT
+
+
+        end
+    end
+
+    
+    EPC --> EP1[Engergy Features]
+    EPC --> EP2[Energy Attributes]
+    
+    subgraph "Energy Performance Certificate"
+
+        EP1 --> |Features| EP11
+        EP2 --> |Attributes| EP21
+
+        subgraph EP11["Energy Efficient Features"]
+        direction TB
+        WAL[Walls]
+        INS[Insulation]
+        ROF[Roof]
+        FLR[Floor]
+        EGY[Gas Heating]
+        REG[Renewable Energy]
+        DOO[Doors]
+        WIN[Windows]
+
+        WAL -->INS
+        INS -->ROF
+        ROF -->FLR
+        FLR -->EGY
+        EGY -->REG
+        REG -->DOO
+        DOO -->WIN
+        end
+
+        subgraph EP21[Energy Efficient Attributes]
+        direction TB
+        WCT[Wall construction type]
+        CWI[Cavity wall insulation]
+        THB[Thermal bridging]
+        LFT[Loft insulation]
+        ROT[Roof type]
+        FCT[Floor construction type]
+        FIS[Floor insulation]
+        SSF[Suspended vs solid floor]
+        HES[Heating system]
+        HOW[Hot water]
+        LIG[Lighting]
+        SOP[Solar panels]
+        HEP[Heat pumps]
+        DRP[Draught proofing]
+        AIT[Air tightness]
+        WGT[Window glazing type]
+        WFT[Window frame type]
+        DOT[Doors type]
+        SIZ[Property size]
+        ROH[Room heights]
+        EEC[Estimated energy costs]
+        CO2[CO2 emmissions]
+        PEU[Primary energy use]
+
+        %% Building envelope flow
+        WCT --> CWI
+        CWI --> THB
+        THB --> LFT
+        LFT --> ROT
+        ROT --> FCT
+        FCT --> FIS
+        FIS --> SSF
+        SSF --> DRP
+        DRP --> AIT
+        
+        %% Windows and doors flow
+        AIT --> WGT
+        WGT --> WFT
+        WFT --> DOT
+        
+        %% Systems flow
+        DOT --> HES
+        HES --> HOW
+        HOW --> LIG
+        
+        %% Renewable systems
+        LIG --> SOP
+        SOP --> HEP
+        
+        %% Property characteristics
+        HEP --> SIZ
+        SIZ --> ROH
+        
+        %% Performance metrics
+        ROH --> EEC
+        EEC --> CO2
+        CO2 --> PEU
+
+        end
+    end

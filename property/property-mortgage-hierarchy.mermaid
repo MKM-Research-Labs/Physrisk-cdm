@@ -1,0 +1,74 @@
+graph TD
+    %% Property Model - Left Side
+    subgraph Property[Physical Property]
+        direction TB
+        ResidentialProperty[ResidentialProperty] --> BasicLocation[geospatialLocation]
+        ResidentialProperty --> UPRN[uprn]
+        ResidentialProperty --> PropAddr[address]
+        ResidentialProperty --> PropRef[referenceData]
+        ResidentialProperty --> Const[construction]
+        ResidentialProperty --> Heat[heatingSystem]
+        ResidentialProperty --> Fit[fittings]
+        ResidentialProperty --> FloodExp[floodExperience]
+        ResidentialProperty --> Features[features]
+    end
+
+    %% Mortgage Model - Right Side
+    subgraph Mortgage[Mortgage Details]
+        direction TB
+        MortgageApplication[MortgageApplication]
+        
+        subgraph LoanDetails[Loan Details]
+            direction TB
+            LoanID[loanIdentifier]
+            InitAmt[initialAmount]
+            OutBal[outstandingBalance]
+            IntRate[interestRate]
+            Term[term]
+            MatDate[maturityDate]
+            OrigDate[originationDate]
+            PayFreq[paymentFrequency]
+        end
+        
+        subgraph PaymentInfo[Payment Status]
+            direction TB
+            Arrears[isInArrears]
+            DaysPast[daysPastDue]
+            Default[inDefault]
+        end
+        
+        subgraph Valuation[Property Valuation]
+            direction TB
+            CurrVal[currentValue]
+            LTV[loanToValue]
+            ValDate[lastValuationDate]
+            FloodZone[floodRiskZone]
+        end
+        
+        subgraph Borrower[Borrower Profile]
+            direction TB
+            Credit[creditScore]
+            Income[annualIncome]
+            EmpStatus[employmentStatus]
+            DTI[debtToIncome]
+            ResStatus[residencyStatus]
+        end
+        
+        MortgageApplication --> LoanDetails
+        MortgageApplication --> PaymentInfo
+        MortgageApplication --> Valuation
+        MortgageApplication --> Borrower
+    end
+
+    %% Connection between Property and Mortgage
+    Valuation -.->|references| ResidentialProperty
+    
+    %% Styling
+    classDef property fill:#e1f5fe,stroke:#1976d2
+    classDef mortgage fill:#e8f5e9,stroke:#388e3c
+    classDef connection fill:#fff3e0,stroke:#f57c00
+    classDef subgraph fill:#ffffff,stroke:#666666
+
+    class ResidentialProperty,BasicLocation,UPRN,PropAddr,PropRef,Const,Heat,Fit,FloodExp,Features property
+    class MortgageApplication,LoanDetails,PaymentInfo,Valuation,Borrower mortgage
+    class CurrVal,LTV,ValDate,FloodZone connection

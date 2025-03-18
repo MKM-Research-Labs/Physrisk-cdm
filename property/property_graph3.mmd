@@ -1,0 +1,314 @@
+%%{
+  init: {
+    'graph': {
+      'rankdir': 'TB',
+      'nodesep': 10,
+      'ranksep': 20,
+      'splines': 'othogonal',
+      'pack': true,
+      'edgesep': 10,
+       'marginx': 5,
+      'marginy': 5,
+      'compound': true,
+      'acyclicer': 'greedy',
+      'ranker': 'tight-tree'
+    }
+  }
+}%%
+
+graph TB
+    RP[Residential Property] --> PLP & CFP & HC & VC & EVH & TST
+
+    EVH[Environmental History] --> FLH & SUB & POL & FIR
+
+    subgraph Environmental History
+        FLH[Flood History] --> FFR
+
+        subgraph FloodInfo[Flood Information]
+            FFR --> FLD --> FLZ -->FDA
+            FFR[Flood frequency]
+            FLD[River flood damage]
+            FLZ[Coastal damage]
+            FDA[Flood last date]
+        end
+        SUB[Soil Ground History] --> LSU
+        subgraph SoilInfo[Subsidence Related History]
+            LSU --> TRS --> BRS --> MIN --> LSI
+            LSU[Land related]
+            TRS[Tree related]
+            BRS[Building foundation]
+            MIN[Mining or industrial]
+            LSI[Last subsidence date]
+        end
+        POL[Polution Levels] --> APL
+        subgraph PollutionInfo[Pollution History]
+            APL --> NOC --> WAQ --> SCU --> LPI
+            APL[Air pollution]
+            NOC[Noise complaints]
+            WAQ[Water quality]
+            SCU[Soil contamination]
+            LPI[Last pollution date]
+        end
+
+        FIR[Fire Instances] --> HFD
+        subgraph FireInfo[Fire History]
+            HFD --> WFD --> LFI
+            HFD[House fire damage]
+            WFD[Wildfire damage]
+            LFI[Last fire date]
+        end
+    end
+
+
+    TST[Transaction History] --> PSH & PRH & STR & TPV
+
+    subgraph TransactionHistory[Transaction History]
+        
+        PSH[Purchase History] --> SAP
+
+        subgraph SaleInfo[Sale Information]
+            SAP[Sale Price] --> SAD[Sale date]
+            SAD --> SPB[Current owner]
+            SPB -->TTM[Time on market]
+        end
+        
+        PRH[Rental History] --> RRR
+        
+        subgraph RentInfo[Rental History]
+            RRR --> VCO --> TND
+            RRR[Rental Rates]
+            VCO[Vacancy Occurences]
+            TND[Tenant Duration]
+        end
+        
+        STR[Structural Records] --> MAJ
+        
+        subgraph StructuralInfo[Structural History]
+            MAJ --> PPA --> BBC --> LUC -->VIO
+            MAJ[Major Renovaions]
+            PPA[Planning Applications]
+            BBC[Building certificates]
+            LUC[Land use change]
+            VIO[Violations and complaints]
+        end
+        
+        TPV[Third Party Scores] --> ThirdParty
+        
+        subgraph ThirdpartyInfo[Third Party Scores]
+
+            subgraph ThirdParty[Third Party]
+                DVM[Date, vendor, metric]
+                RCP[RCP scenario pathway]
+            end
+            
+            ThirdParty --> CFO--> EPC --> SOP --> FLS --> Curves
+            
+            CFO[Carbon footprint]
+            EPC[Energy performance certificate]
+            SOP[Flood score defended]
+            FLS[Flood score undedended]
+
+            subgraph Curves[Curves]
+                HZC --> VLC
+                HZC[Hazard Curve]
+                VLC[Vulnerability Curve]
+            end
+        end
+    end
+
+    
+    PLP[Property Level Protection] --> TProt & PProt & NProt
+    
+    subgraph Protection[Property Protection]
+
+        TProt[Temporary Protection] --> EF1
+        TProt --> IF1
+        PProt[Permanent Protection] --> RTS
+        PProt --> EVS
+        PProt --> PPD
+        NProt[Natural Protection] --> RAG
+
+        subgraph Internal1[Internal Fittings Details]
+            IF1[Internal Fittings] --> TOB --> RDS --> OTa
+            TOB[Toilet Bungs]
+            RDS[Removeable Door Seat]
+            OTa[Other]
+        end
+
+        subgraph External1[External Fittings Details]
+            EF1[External Fittings] --> FB --> SB --> FP1 --> AC --> OTb[Other]
+            FB[Flood barriers or gates]
+            SB[Sandbags or barriers]
+            FP1[Flood panels]
+            AC[Airbrick covers]
+        end
+
+        subgraph Internal2[Internal Fittings Details]
+            EVS --> NRV --> SPS --> WPF --> OTc[Other]
+            EVS[Elevated Electrical Sockets]
+            NRV[Non Return Value]
+            SPS[Sump Pump Systems]
+            WPF[Waterproof Flooring]
+        end
+
+        subgraph FloodRes[Flood Resilience Details]
+            RTS --> WWS --> CWM --> FDW --> RFS --> REF--> OTd[Other]
+            RTS[Raised Threshold Step]
+            WWS[Waterproof Wall Sealant]
+            CWM[Cavity Wall Membrane]
+            FDW[Flood Resilient Doors]
+            RFS[Raised Foundations]
+            REF[Reinforced Walls]
+        end
+
+        subgraph External2[External Fittings Details]
+            PPD --> PDS --> LWD --> OTe[Other]
+            PPD[Permeable Paving]
+            PDS[Proper Drainage]
+            LWD[Landscaping]
+        end
+
+        subgraph EnvFeatures[Environmental Features]
+            RAG --> DEP --> GRF --> STP --> BEL --> WST--> OTf[Other]
+            RAG[Rain gardens]
+            DEP[Detention Ponds]
+            GRF[Green Roofs]
+            STP[Tree planting]
+            BEL[Bioswales]
+            WST[Water Storage]
+        end
+    end
+    HC[Hazard Curve] --> HC1 & HC3
+    subgraph Hazard
+
+        HC1[Location Details] --> GEL
+
+        subgraph Location[Location Details]
+            GEL --> ADR --> POS --> LAT --> BND
+            GEL[Geospatial Location]
+            ADR[Address]
+            POS[Postcode]
+            LAT[Local Authority]
+            BND[Council Tax Band]
+
+        end
+        
+        HC3[Surrounding Area] --> DFW
+        
+        subgraph SurroundArea[Surrounding Area Details]
+            DFW --> NBT --> HZP --> USR --> ELV --> SOT --> FLL
+            DFW[Distance from water]
+            NBT[Nearby topography]
+            HZP[Hazard parameters]
+            USR[Urban/Suburban/Rural]
+            ELV[Elevation]
+            SOT[Soil type]
+            FLL[Floor level]
+        end
+    end
+    
+    VC[Vulnerability Curve] --> VC1 & VC2
+    subgraph Vulnerability
+        
+        
+        subgraph Construction[Building Construction]
+            VC1[Foundations] --> HAG --> WBF --> FDT --> CST --> NOS
+            HAG[Height above ground]
+            WBF[Basement flag]
+            FDT[Foundation type]
+            CST[Construction type]
+            NOS[Number of stories]
+        end
+
+        subgraph BuildingType[Building Type]
+            VC2[Occupancy Type] --> CVD --> PMA --> PTT --> SQF 
+            CVD[Content value]
+            PMA[Property material]
+            PTT[Property type]
+            SQF[Square footage]
+            
+        end
+    end
+
+
+    subgraph Features[Energy Efficient Features]
+        WAL[Walls]
+        INS[Insulation]
+        ROF[Roof]
+        FLR[Floor]
+        EGY[Gas Heating]
+        REG[Renewable Energy]
+        DOO[Doors]
+        WIN[Windows]
+    end
+
+    subgraph Attributes[Energy Efficient Attributes]
+        subgraph WallAttributes[Wall Attributes]
+            WCT[Wall construction]
+            CWI[Cavity insulation]
+            THB[Thermal bridging]
+        end
+
+        subgraph RoofFloorAttributes[Roof Floor Attributes]
+            LFT[Loft insulation]
+            ROT[Roof type]
+            FCT[Floor construction]
+            FIS[Floor insulation]
+            SSF[Suspended floor]
+        end
+
+        subgraph InsulationAttributes[Insulation Attributes]
+            DRP[Draught proofing]
+            AIT[Air tightness]
+        end
+
+        subgraph WindowDoorAttributes[Window Door Attributes]
+            WGT[Window glazing]
+            WFT[Window frame]
+            DOT[Door type]
+        end
+
+        subgraph HeatingAttributes[Heating Attributes]
+            HES[Heating system]
+            HOW[Hot water]
+            LIG[Lighting]
+        end
+
+        subgraph RenewableAttributes[Renewable Attributes]
+            SLP[Solar panels]
+            HEP[Heat pumps]
+        end
+
+        subgraph PropertyAttributes[Property Attributes]
+            SIZ[Property size]
+            ROH[Room heights]
+            EEC[Energy costs]
+            CO2[CO2 emissions]
+            PEU[Primary energy]
+        end
+    end
+
+    CFP[Carbon Footprint] --> Features
+
+ %% Wall connections
+    WAL --> WallAttributes
+
+    %% Roof and Floor connections
+    ROF --> RoofFloorAttributes
+    FLR --> RoofFloorAttributes
+
+    %% Insulation connections
+    INS --> InsulationAttributes
+
+    %% Windows and Doors connections
+    WIN --> WindowDoorAttributes
+    DOO --> WindowDoorAttributes
+
+    %% Heating connections
+    EGY --> HeatingAttributes
+
+    %% Renewable connections
+    REG --> RenewableAttributes
+
+    %% All features contribute to Property Attributes
+    WAL --> PropertyAttributes

@@ -1,0 +1,214 @@
+%%{
+  init: {
+    'graph': {
+      'rankdir': 'TB',
+      'nodesep': 10,
+      'ranksep': 20,
+      'splines': 'polyline',
+      'pack': true,
+      'edgesep': 10
+    }
+  }
+}%%
+
+graph TB
+    RP[Residential Property] --> PLP & CFP & HC & VC & HST
+
+    HST[History]
+    
+    PLP[Property Level Protection] --> TProt & PProt & NProt
+    
+    subgraph Protection
+        TProt[Temporary Protection] --> |External|EF1
+        TProt --> |Internal| IF1
+        PProt[Permanent Protection] --> |Construction|RTS
+        PProt --> |Internal| EVS
+        PProt --> |External| PPD
+        NProt[Natural Protection] --> |Environmental| EnvF
+
+        subgraph Internal1[Internal Fittings Details]
+            IF1[Internal Fittings] --> TOB --> RDS
+            TOB[Toilet Bungs]
+            RDS[Removeable Door Seat]
+        end
+
+        subgraph External1[External Fittings Details]
+            EF1[External Fittings] --> FB --> SB --> FP1 --> AC
+            FB[Flood barriers or gates]
+            SB[Sandbags or barriers]
+            FP1[Flood panels]
+            AC[Airbrick covers]
+        end
+
+        subgraph Internal2[Internal Fittings Details]
+            EVS --> NRV --> SPS --> WPF
+            EVS[Elevated Electrical Sockets]
+            NRV[Non Return Value]
+            SPS[Sump Pump Systems]
+            WPF[Waterproof Flooring]
+        end
+
+        subgraph FloodRes[Flood Resilience Details]
+            RTS --> WWS --> CWM --> FDW --> RFS --> REF
+            RTS[Raised Threshold Step]
+            WWS[Waterproof Wall Sealant]
+            CWM[Cavity Wall Membrane]
+            FDW[Flood Resilient Doors]
+            RFS[Raised Foundations]
+            REF[Reinforced Walls]
+        end
+
+        subgraph External2[External Fittings Details]
+            PPD --> PDS --> LWD
+            PPD[Permeable Paving]
+            PDS[Proper Drainage]
+            LWD[Landscaping]
+        end
+
+        subgraph EnvFeatures[Environmental Features]
+            EnvF --> RAG --> DEP --> GRF --> STP --> BEL --> WST
+            RAG[Rain gardens]
+            DEP[Detention Ponds]
+            GRF[Green Roofs]
+            STP[Tree planting]
+            BEL[Bioswales]
+            WST[Water Storage]
+        end
+    end
+    HC[Hazard Curve] --> HC1 & HC3
+    subgraph Hazard
+
+        HC1[Location Details] --> |Locality| GEL
+
+        subgraph Location[Location Details]
+            GEL[Geospatial Location]
+            ADR[Address]
+            POS[Postcode]
+            LAT[Local Authority]
+            BND[Council Tax Band]
+            GEL --> ADR
+            ADR --> POS
+            POS --> LAT
+            LAT --> CTB
+        end
+        
+        HC3[Surrounding Area] --> |Locality| DFW
+        
+        subgraph SurroundArea[Surrounding Area Details]
+            DFW --> NBT --> HZP --> USR --> ELV --> SOT --> FLL
+            DFW[Distance from water]
+            NBT[Nearby topography]
+            HZP[Hazard parameters]
+            USR[Urban/Suburban/Rural]
+            ELV[Elevation]
+            SOT[Soil type]
+            FLL[Floor level]
+        end
+    end
+    
+    VC[Vulnerability Curve] --> VC1 & VC2
+    subgraph Vulnerability
+        
+        
+        subgraph Construction[Building Construction]
+            VC1[Foundations] --> HAG --> WBF --> FDT --> CST --> NOS
+            HAG[Height above ground]
+            WBF[Basement flag]
+            FDT[Foundation type]
+            CST[Construction type]
+            NOS[Number of stories]
+        end
+
+        subgraph BuildingType[Building Type]
+            VC2[Occupancy Type] --> OCC --> CVD --> PMA --> PTT --> SQF --> EXT
+            OCC[Occupancy type]
+            CVD[Content value]
+            PMA[Property material]
+            PTT[Property type]
+            SQF[Square footage]
+            EXT[Extensions]
+        end
+    end
+
+
+    subgraph Features[Energy Efficient Features]
+        WAL[Walls]
+        INS[Insulation]
+        ROF[Roof]
+        FLR[Floor]
+        EGY[Gas Heating]
+        REG[Renewable Energy]
+        DOO[Doors]
+        WIN[Windows]
+    end
+
+    subgraph Attributes[Energy Efficient Attributes]
+        subgraph WallAttributes
+            WCT[Wall construction]
+            CWI[Cavity insulation]
+            THB[Thermal bridging]
+        end
+
+        subgraph RoofFloorAttributes
+            LFT[Loft insulation]
+            ROT[Roof type]
+            FCT[Floor construction]
+            FIS[Floor insulation]
+            SSF[Suspended floor]
+        end
+
+        subgraph InsulationAttributes
+            DRP[Draught proofing]
+            AIT[Air tightness]
+        end
+
+        subgraph WindowDoorAttributes
+            WGT[Window glazing]
+            WFT[Window frame]
+            DOT[Door type]
+        end
+
+        subgraph HeatingAttributes
+            HES[Heating system]
+            HOW[Hot water]
+            LIG[Lighting]
+        end
+
+        subgraph RenewableAttributes
+            SOP[Solar panels]
+            HEP[Heat pumps]
+        end
+
+        subgraph PropertyAttributes
+            SIZ[Property size]
+            ROH[Room heights]
+            EEC[Energy costs]
+            CO2[CO2 emissions]
+            PEU[Primary energy]
+        end
+    end
+
+    CFP[Carbon Footprint] --> Features
+
+    %% Wall connections
+    WAL --> WallAttributes
+
+    %% Roof and Floor connections
+    ROF --> RoofFloorAttributes
+    FLR --> RoofFloorAttributes
+
+    %% Insulation connections
+    INS --> InsulationAttributes
+
+    %% Windows and Doors connections
+    WIN --> WindowDoorAttributes
+    DOO --> WindowDoorAttributes
+
+    %% Heating connections
+    EGY --> HeatingAttributes
+
+    %% Renewable connections
+    REG --> RenewableAttributes
+
+    %% All features contribute to Property Attributes
+    Features --> PropertyAttributes

@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PropertyCDM",
+  "description": "FINOS CDM representation of property data for insurance and mortgage purposes",
+  "type": "object",
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "properties": {
+        "streetAddress": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "country": { "type": "string" }
+      },
+      "required": ["streetAddress", "city", "state", "postalCode", "country"]
+    },
+    "Dimension": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "number" },
+        "unit": { "type": "string", "enum": ["SQFT", "SQMT", "FT", "MT"] }
+      },
+      "required": ["value", "unit"]
+    },
+    "DateInfo": {
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "verificationSource": { "type": "string" }
+      },
+      "required": ["date"]
+    },
+    "PropertyType": {
+      "type": "string",
+      "enum": ["DETACHED", "SEMI_DETACHED", "TERRACED", "APARTMENT"]
+    },
+    "RiskLevel": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"]
+    }
+  },
+  "properties": {
+    "propertyId": {
+      "type": "string",
+      "description": "Unique identifier for the property"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "lastUpdated": { "$ref": "#/definitions/DateInfo" },
+        "dataSource": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "basicInfo": {
+      "type": "object",
+      "properties": {
+        "propertyType": { "$ref": "#/definitions/PropertyType" },
+        "address": { "$ref": "#/definitions/Address" },
+        "yearBuilt": { "type": "integer" },
+        "floorArea": { "$ref": "#/definitions/Dimension" },
+        "numberOfStories": { "type": "integer" },
+        "numberOfBedrooms": { "type": "integer" },
+        "numberOfBathrooms": { "type": "integer" }
+      },
+      "required": ["propertyType", "address", "yearBuilt", "floorArea"]
+    },
+    "construction": {
+      "type": "object",
+      "properties": {
+        "foundation": {
+          "type": "string",
+          "enum": ["SLAB", "CRAWL_SPACE", "BASEMENT"]
+        },
+        "wallConstruction": {
+          "type": "string",
+          "enum": ["BRICK", "WOOD_FRAME", "CONCRETE", "STONE"]
+        },
+        "roofing": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["GABLE", "HIP", "FLAT", "MANSARD"]
+            },
+            "material": {
+              "type": "string",
+              "enum": ["ASPHALT_SHINGLE", "TILE", "METAL", "SLATE"]
+            },
+            "lastInspection": { "$ref": "#/definitions/DateInfo" }
+          }
+        }
+      }
+    },
+    "systems": {
+      "type": "object",
+      "properties": {
+        "electrical": {
+          "type": "object",
+          "properties": {
+            "serviceCapacity": { "type": "integer" },
+            "lastInspection": { "$ref": "#/definitions/DateInfo" },
+            "panelType": {
+              "type": "string",
+              "enum": ["CIRCUIT_BREAKER", "FUSE_BOX"]
+            }
+          }
+        },
+        "hvac": {
+          "type": "object",
+          "properties": {
+            "heatingType": {
+              "type": "string",
+              "enum": ["FORCED_AIR", "RADIATOR", "HEAT_PUMP"]
+            },
+            "coolingType": {
+              "type": "string",
+              "enum": ["CENTRAL_AC", "HEAT_PUMP", "WINDOW_UNITS"]
+            },
+            "systemAge": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "riskAssessment": {
+      "type": "object",
+      "properties": {
+        "floodZone": {
+          "type": "string",
+          "enum": ["ZONE_A", "ZONE_B", "ZONE_C", "ZONE_X"]
+        },
+        "earthquakeRisk": { "$ref": "#/definitions/RiskLevel" },
+        "windExposure": { "$ref": "#/definitions/RiskLevel" },
+        "distanceToFireStation": { "$ref": "#/definitions/Dimension" },
+        "distanceToHydrant": { "$ref": "#/definitions/Dimension" }
+      }
+    },
+    "resilienceMeasures": {
+      "type": "object",
+      "properties": {
+        "floodProtection": {
+          "type": "object",
+          "properties": {
+            "floodBarriers": { "type": "boolean" },
+            "sumpPump": { "type": "boolean" },
+            "backwaterValve": { "type": "boolean" }
+          }
+        },
+        "stormProtection": {
+          "type": "object",
+          "properties": {
+            "stormShutters": { "type": "boolean" },
+            "impactResistantWindows": { "type": "boolean" },
+            "hurricaneStraps": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  },
+  "required": ["propertyId", "metadata", "basicInfo"],
+  
+  "example": {
+    "propertyId": "PROP123456789",
+    "metadata": {
+      "lastUpdated": {
+        "date": "2024-11-05",
+        "verificationSource": "Licensed Property Surveyor"
+      },
+      "dataSource": "ABC Mortgage Services",
+      "version": "1.0.0"
+    },
+    "basicInfo": {
+      "propertyType": "DETACHED",
+      "address": {
+        "streetAddress": "123 Resilience Road",
+        "city": "Coastal Town",
+        "state": "FL",
+        "postalCode": "33139",
+        "country": "USA"
+      },
+      "yearBuilt": 2015,
+      "floorArea": {
+        "value": 2500,
+        "unit": "SQFT"
+      },
+      "numberOfStories": 2,
+      "numberOfBedrooms": 4,
+      "numberOfBathrooms": 3
+    },
+    "construction": {
+      "foundation": "SLAB",
+      "wallConstruction": "CONCRETE",
+      "roofing": {
+        "type": "HIP",
+        "material": "TILE",
+        "lastInspection": {
+          "date": "2024-06-15",
+          "verificationSource": "Certified Roof Inspector"
+        }
+      }
+    },
+    "systems": {
+      "electrical": {
+        "serviceCapacity": 200,
+        "lastInspection": {
+          "date": "2024-01-15",
+          "verificationSource": "Licensed Electrician"
+        },
+        "panelType": "CIRCUIT_BREAKER"
+      },
+      "hvac": {
+        "heatingType": "HEAT_PUMP",
+        "coolingType": "CENTRAL_AC",
+        "systemAge": 3
+      }
+    },
+    "riskAssessment": {
+      "floodZone": "ZONE_X",
+      "earthquakeRisk": "LOW",
+      "windExposure": "HIGH",
+      "distanceToFireStation": {
+        "value": 1.2,
+        "unit": "MT"
+      },
+      "distanceToHydrant": {
+        "value": 100,
+        "unit": "FT"
+      }
+    },
+    "resilienceMeasures": {
+      "floodProtection": {
+        "floodBarriers": true,
+        "sumpPump": true,
+        "backwaterValve": true
+      },
+      "stormProtection": {
+        "stormShutters": true,
+        "impactResistantWindows": true,
+        "hurricaneStraps": true
+      }
+    }
+  }
+}

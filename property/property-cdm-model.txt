@@ -1,0 +1,124 @@
+namespace com.property.model {
+    type ResidentialProperty {
+        // Unique identifier
+        propertyId: string (1..1)
+        
+        // Reference Data
+        referenceData: ReferenceData (1..1)
+        
+        // Construction Details
+        construction: ConstructionDetails (1..1)
+        
+        // Systems
+        heatingSystem: HeatingSystem (1..1)
+        
+        // Fittings
+        fittings: Fittings (1..1)
+        
+        // Flood Information
+        floodExperience: FloodExperience (1..1)
+        
+        // Property Features
+        features: Features (1..1)
+    }
+    
+    type ReferenceData {
+        geospatialLocation: string (1..1) // [longitude, latitude]
+        type: string (1..1) // Terrace, Semi-detached
+        floorSpace: decimal (1..1) // m^2
+        yearConstructed: int (1..1)
+        floors: int (1..1)
+        numberBedrooms: int (1..1)
+    }
+    
+    type ConstructionDetails {
+        wallConstruction: string (1..1) // masonry, timber
+        cavityInsulation: boolean (1..1)
+        cellarBasement: boolean (1..1)
+        groundFloorConstruction: string (1..1) // concrete, timber
+        floorCoverings: string (1..1) // concrete, timber
+        extensionHistory: ExtensionHistory (0..*)
+        floorLevel: decimal (1..1) // m
+        floodProtectionMeasures: FloodProtection (0..1)
+        loftInsulation: decimal (1..1) // mm
+        windowGlazing: string (1..1) // 1,2,3
+        floorInsulation: boolean (1..1)
+        droughtProof: boolean (1..1)
+    }
+    
+    type HeatingSystem {
+        condenserBoiler: boolean (1..1)
+        smartMeters: boolean (1..1)
+        renewableEnergy: RenewableEnergy (0..1)
+    }
+    
+    type Fittings {
+        kitchenUnits: string (1..1) // plastic, wood, ceramic
+        flooring: string (1..1) // carpet, wood
+    }
+    
+    type FloodExperience {
+        floodFlag: string (1..1) // none, once, multiple times
+        floodEvent: FloodEvent (0..*)
+    }
+    
+    type Features {
+        epc: Score (1..1)
+        sop: Score (1..1)
+        perilCurve: PerilCurve (1..1)
+        insurance: decimal (1..1)
+        vulnerabilityCurve: VulnerabilityCurve (1..1)
+    }
+    
+    // Supporting types
+    type ExtensionHistory {
+        type: string (1..1)
+        size: decimal (1..1)
+        date: date (1..1)
+    }
+    
+    type FloodProtection {
+        type: string (1..1)
+        metric: decimal (1..1)
+        installationDate: date (1..1)
+    }
+    
+    type RenewableEnergy {
+        types: string (0..*) // solar, thermal, heat pumps, biomass
+    }
+    
+    type FloodEvent {
+        hazard: string (1..1)
+        depth: decimal (1..1)
+        date: date (1..1)
+    }
+    
+    type Score {
+        value: decimal (1..1)
+    }
+    
+    type PerilCurve {
+        period: string (1..1)
+        metric: decimal (1..1)
+        level: decimal (1..1)
+    }
+    
+    type VulnerabilityCurve {
+        peril: string (1..1)
+        level: decimal (1..1)
+        pct: decimal (1..1)
+    }
+
+    // Validation rules
+    function validateFloorSpace:
+        inputs:
+            property: ResidentialProperty
+        output: boolean
+        condition: property.referenceData.floorSpace > 0.0
+
+    function validateConstructionYear:
+        inputs:
+            property: ResidentialProperty
+        output: boolean
+        condition: property.referenceData.yearConstructed <= today().year
+}

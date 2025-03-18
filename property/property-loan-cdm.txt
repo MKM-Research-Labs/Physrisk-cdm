@@ -1,0 +1,72 @@
+namespace com.mortgage.product {
+    // The main loan product
+    type ResidentialMortgage extends LoanProduct {
+        loanAmount: Money (1..1)
+        interestRate: InterestRate (1..1)
+        term: Period (1..1)
+        collateral: ResidentialProperty (1..1)
+        borrower: party.Person (1..1)
+        lender: party.LegalEntity (1..1)
+        paymentSchedule: PaymentSchedule (1..1)
+    }
+    
+    // Property serving as collateral
+    type ResidentialProperty {
+        address: Address (1..1)
+        valuation: Valuation (1..1)
+        propertyType: PropertyType (1..1)
+        titleInfo: TitleInformation (1..1)
+    }
+    
+    // Payment schedule definition
+    type PaymentSchedule {
+        frequency: PaymentFrequency (1..1)
+        startDate: date (1..1)
+        endDate: date (1..1)
+        paymentAmount: Money (1..1)
+    }
+    
+    // Valuation details
+    type Valuation {
+        amount: Money (1..1)
+        valuationDate: date (1..1)
+        valuationType: ValuationType (1..1)
+        appraiser: party.LegalEntity (0..1)
+    }
+    
+    // Enums for standard values
+    enum PropertyType {
+        SINGLE_FAMILY
+        MULTI_FAMILY
+        CONDO
+        TOWNHOUSE
+    }
+    
+    enum PaymentFrequency {
+        MONTHLY
+        BI_WEEKLY
+        WEEKLY
+    }
+    
+    enum ValuationType {
+        APPRAISAL
+        AUTOMATED
+        PURCHASE_PRICE
+    }
+}
+
+// Validation rules
+function validateLoanToValue: 
+    inputs: 
+        loan: ResidentialMortgage
+    output: boolean
+    condition: loan.loanAmount <= loan.collateral.valuation.amount * 0.95 // Example LTV limit
+
+// Lifecycle event handler
+function handlePaymentEvent:
+    inputs:
+        loan: ResidentialMortgage
+        payment: Money
+        date: date
+    output: ResidentialMortgage
+    // Update loan balance and generate payment record

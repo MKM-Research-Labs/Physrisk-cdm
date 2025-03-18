@@ -1,0 +1,95 @@
+flowchart TD
+    PHV[Property Historical Valuation]
+
+    %% Level 1 - Main Categories
+    PHV --> TH[Transaction History]
+    PHV --> EH[Environmental History]
+    PHV --> SH[Structural History]
+    PHV --> LH[Legal History]
+    PHV --> NH[Neighborhood History]
+    PHV --> IH[Insurance History]
+
+    %% Transaction History Branch
+    TH --> TR[Transaction Records]
+    TR --> PSH[Sale History]
+    TR --> RPH[Rental History]
+    TR --> TMH[Market Time History]
+
+    PSH --> |Records| SP[Sale Prices]
+    PSH --> |Records| SD[Sale Dates]
+    PSH --> |Records| SB[Buyers]
+
+    RPH --> |Records| RR[Rental Rates]
+    RPH --> |Records| VO[Vacancies]
+    RPH --> |Records| TD[Tenant Duration]
+
+    %% Environmental History Branch
+    EH --> ER[Environmental Records]
+    ER --> FLD[Flood Records]
+    ER --> GND[Ground Records]
+    ER --> ENV[Environmental Quality]
+
+    FLD --> |Details| FF[Flood Frequency]
+    FLD --> |Details| FD[Flood Damage]
+    FLD --> |Details| FZ[Flood Zones]
+
+    GND --> |Details| LS[Land Subsidence]
+    GND --> |Details| SC[Soil Contamination]
+    GND --> |Details| GS[Ground Stability]
+
+    ENV --> |Metrics| AQ[Air Quality]
+    ENV --> |Metrics| NL[Noise Levels]
+    ENV --> |Metrics| WQ[Water Quality]
+
+    %% Structural History Branch
+    SH --> SR[Structural Records]
+    SR --> REN[Renovations]
+    SR --> DAM[Damage History]
+    SR --> MOD[Modifications]
+
+    REN --> |Details| MR[Major Repairs]
+    REN --> |Details| PA[Planning Apps]
+    REN --> |Details| BC[Building Certs]
+
+    DAM --> |Details| NH2[Natural Hazards]
+    DAM --> |Details| SI[Subsidence]
+    DAM --> |Details| FR[Fires]
+
+    %% Legal History Branch
+    LH --> LR[Legal Records]
+    LR --> ZON[Zoning]
+    LR --> REG[Regulations]
+    LR --> VIO[Violations]
+
+    ZON --> |Changes| LU[Land Use]
+    ZON --> |Changes| DR[Density Rules]
+
+    VIO --> |Records| BE[Building]
+    VIO --> |Records| HC[Health Code]
+    VIO --> |Records| NC[Noise]
+
+    %% Neighborhood History Branch
+    NH --> NR[Neighborhood Records]
+    NR --> DEM[Demographics]
+    NR --> INF[Infrastructure]
+    NR --> COM[Community]
+
+    DEM --> |Trends| PP[Population]
+    DEM --> |Trends| IC[Income]
+
+    INF --> |Services| TS[Transport]
+    INF --> |Services| US[Utilities]
+
+    COM --> |Changes| PS[Public Services]
+    COM --> |Changes| AM[Amenities]
+    COM --> |Changes| SC[Schools]
+
+    %% Insurance History Branch
+    IH --> IR[Insurance Records]
+    IR --> CLM[Claims]
+    IR --> PRM[Premiums]
+    IR --> COV[Coverage]
+
+    CLM --> |Types| WD[Water Damage]
+    CLM --> |Types| FD2[Fire Damage]
+    CLM --> |Types| TD2[Theft]
