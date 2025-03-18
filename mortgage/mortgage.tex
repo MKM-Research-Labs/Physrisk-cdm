@@ -1,0 +1,128 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\title{Mortgage Portfolio Analysis Form Description}
+\author{}
+\date{}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+This document outlines the structure and fields of the Mortgage Portfolio Analysis Form. The form is designed to capture comprehensive data for each mortgage in the portfolio, enabling detailed risk assessment and analysis.
+
+\section{Form Structure}
+The form is divided into several key sections, each focusing on a specific aspect of the mortgage or borrower information.
+
+\section{Form Sections and Fields}
+
+\subsection{Loan Details}
+This section captures the fundamental information about the loan.
+
+\begin{itemize}
+  \item Loan ID: Unique identifier for the loan
+  \item Original Loan Amount: Initial amount borrowed (in \$)
+  \item Outstanding Balance: Current amount owed (in \$)
+  \item Interest Rate: Current interest rate (in \%)
+  \item Spread: Difference between the loan rate and a benchmark rate (in \%)
+  \item Fixed/Variable Rate: Toggle between fixed or variable rate loan
+  \item Loan Term: Duration of the loan (in years)
+  \item Maturity Date: Date when the loan is due to be fully repaid
+  \item Origination Date: Date when the loan was initially granted
+  \item Payment Frequency: How often payments are made (e.g., monthly, bi-weekly, weekly)
+\end{itemize}
+
+\subsection{Payment Status}
+This section provides information about the current payment status of the loan.
+
+\begin{itemize}
+  \item Is in Arrears: Indicates if the loan is currently behind in payments
+  \item Days Past Due: Number of days the loan is overdue (if applicable)
+  \item Default Flag: Indicates if the loan is in default
+\end{itemize}
+
+\subsection{Property Details}
+This section captures information about the property associated with the mortgage.
+
+\begin{itemize}
+  \item Purchase Value: Original purchase price of the property (in \$)
+  \item Current Property Value: Estimated current market value of the property (in \$)
+  \item Loan to Value (LTV) Ratio: Ratio of the loan amount to the property value (in \%)
+  \item Property Type: Description of the property (e.g., single-family home, apartment, commercial)
+  \item Flood Risk Zone: Designated flood risk category for the property location
+  \item Flood Risk Score: Numerical assessment of flood risk (scale of 1-100)
+  \item EPS (Energy Performance Score): Energy efficiency rating of the property (scale of 0-100)
+\end{itemize}
+
+\subsection{Property Location}
+Detailed information about the location of the mortgaged property.
+
+\begin{itemize}
+  \item Property Address: Full street address of the property
+  \item City: City where the property is located
+  \item State/Province: State or province of the property
+  \item ZIP/Postal Code: Postal code of the property location
+  \item Country: Country where the property is located
+  \item Latitude: Latitude coordinate of the property
+  \item Longitude: Longitude coordinate of the property
+\end{itemize}
+
+\subsection{Borrower Details}
+This section provides information about the borrower(s).
+
+\begin{itemize}
+  \item Borrower Credit Score: Credit score of the primary borrower
+  \item Borrower Income: Annual income of the borrower(s) (in \$)
+  \item Borrower Employment Status: Current employment situation of the borrower
+  \item Marital Status: Marital status of the borrower (Single, Married, Divorced, Widowed)
+\end{itemize}
+
+\subsection{Economic Indicators}
+Relevant economic factors that may impact the loan.
+
+\begin{itemize}
+  \item Bank of England Base Rate: Current base interest rate set by the Bank of England (in \%)
+\end{itemize}
+
+\subsection{Additional Risk Factors}
+Other factors that may influence the risk profile of the mortgage.
+
+\begin{itemize}
+  \item Prepayment Risk: Assessment of the likelihood of early loan repayment (scale of 1-10)
+  \item Refinance Incentive: Measure of the borrower's incentive to refinance (scale of 1-10)
+\end{itemize}
+
+\section{Usage Notes}
+\begin{itemize}
+  \item All monetary values should be entered in the local currency (assumed to be US Dollars unless otherwise specified).
+  \item Percentage values should be entered as decimals (e.g., 5.25\% should be entered as 5.25).
+  \item Dates should be entered in the format YYYY-MM-DD.
+  \item Numeric scales (such as Flood Risk Score, EPS, Prepayment Risk, and Refinance Incentive) should use whole numbers within the specified range.
+\end{itemize}
+
+\section{Data Validation}
+The form should implement appropriate data validation to ensure:
+\begin{itemize}
+  \item Required fields are not left blank
+  \item Numeric fields contain only valid numbers
+  \item Date fields contain valid and logical dates
+  \item Percentage and scoring fields are within their specified ranges
+\end{itemize}
+
+\section{Conclusion}
+This Mortgage Portfolio Analysis Form is designed to capture a comprehensive set of data points for each mortgage. The collected information will enable detailed risk assessment, portfolio analysis, and informed decision-making in mortgage portfolio management.
+
+\end{document}

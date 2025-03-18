@@ -1,0 +1,179 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\title{Mortgage Portfolio Analysis Form Description}
+\author{}
+\date{}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+This document outlines the structure and fields of the Mortgage Portfolio Analysis Form. The form is designed to capture comprehensive data for each mortgage in the portfolio, enabling detailed risk assessment and analysis.
+
+\section{Form Structure}
+The form is divided into several key sections, each focusing on a specific aspect of the mortgage or borrower information.
+
+\section{Form Sections and Fields}
+
+\subsection{System Information}
+Basic system and identification information.
+\begin{itemize}
+  \item Snapshot Date: Current date of data capture
+  \item Encrypted Loan ID: Secure unique identifier for the loan
+  \item Encrypted Member ID: Secure unique identifier for the borrower
+\end{itemize}
+
+\subsection{Loan Details}
+This section captures the fundamental information about the loan.
+\begin{itemize}
+  \item Disbursal Date: Date when funds were disbursed
+  \item Original Loan Amount: Initial amount borrowed (in \$)
+  \item Term: Duration of the loan (in months/years)
+  \item Lending Rate: Interest rate applied to the loan (in \%)
+  \item Spread: Difference between the loan rate and base rate (in \%)
+  \item Fixed/Variable Rate: Toggle between fixed or variable rate loan
+  \item Maturity Date: Date when the loan is due to be fully repaid
+\end{itemize}
+
+\subsection{Payment History}
+Details about payments and current loan status.
+\begin{itemize}
+  \item Principal Collected: Total amount of principal repaid to date
+  \item Interest Collected: Total amount of interest paid to date
+  \item Total Number of Payments: Count of payments made
+  \item Last Payment Date: Date of most recent payment
+  \item Outstanding Balance: Current amount still owed
+  \item Latest Status: Current status of the loan (e.g., current, in arrears, defaulted)
+  \item Date of Default: Date when default occurred (if applicable)
+\end{itemize}
+
+\subsection{Payment Status}
+Current payment status indicators.
+\begin{itemize}
+  \item Is in Arrears: Indicates if the loan is currently behind in payments
+  \item Days Past Due: Number of days the loan is overdue
+  \item Default Flag: Indicates if the loan is in default
+\end{itemize}
+
+\subsection{Property Details}
+Information about the property associated with the mortgage.
+\begin{itemize}
+  \item Purchase Value: Original purchase price of the property
+  \item Current Property Value: Estimated current market value
+  \item Loan to Value (LTV) Ratio: Current loan amount to property value
+  \item Property Type: Description of the property
+  \item Flood Risk Zone: Designated flood risk category
+  \item Flood Risk Score: Numerical assessment of flood risk (1-100)
+  \item EPS (Energy Performance Score): Energy efficiency rating (0-100)
+\end{itemize}
+
+\subsection{Property Location}
+Detailed location information.
+\begin{itemize}
+  \item Property Address: Full street address
+  \item City: City location
+  \item State/Province: State or province
+  \item ZIP/Postal Code: Postal code
+  \item Country: Country location
+  \item Latitude: Latitude coordinate
+  \item Longitude: Longitude coordinate
+\end{itemize}
+
+\subsection{Borrower Details}
+Information about the borrower(s).
+\begin{itemize}
+  \item Borrower Credit Score: Credit score of primary borrower
+  \item Borrower Income: Annual income
+  \item Borrower Employment Status: Current employment situation
+  \item Marital Status: Marital status (Single, Married, Divorced, Widowed)
+\end{itemize}
+
+\subsection{Economic Indicators}
+Relevant economic factors.
+\begin{itemize}
+  \item Bank of England Base Rate: Current BoE base rate (in \%)
+\end{itemize}
+
+\subsection{Additional Risk Factors}
+Other risk-related factors.
+\begin{itemize}
+  \item Prepayment Risk: Likelihood of early repayment (1-10)
+  \item Refinance Incentive: Incentive to refinance (1-10)
+\end{itemize}
+
+\section{Data Formats and Validation}
+
+\subsection{Date Formats}
+All dates should be stored and displayed in YYYY-MM-DD format:
+\begin{itemize}
+  \item Snapshot Date
+  \item Disbursal Date
+  \item Last Payment Date
+  \item Date of Default
+  \item Maturity Date
+\end{itemize}
+
+\subsection{Numeric Formats}
+\begin{itemize}
+  \item Monetary values: Currency with 2 decimal places
+  \item Percentages: Up to 2 decimal places
+  \item Risk scores: Whole numbers within specified ranges
+  \item Counts: Whole numbers only
+\end{itemize}
+
+\subsection{Text Formats}
+\begin{itemize}
+  \item Encrypted IDs: System-generated encrypted strings
+  \item Status values: Predefined set of possible values
+  \item Address fields: Free text with appropriate length limits
+\end{itemize}
+
+\subsection{Validation Rules}
+\begin{itemize}
+  \item All monetary amounts must be positive numbers
+  \item Dates must be logically consistent (e.g., Last Payment Date cannot be after Snapshot Date)
+  \item Percentage values must be between 0 and 100
+  \item Required fields must not be empty
+  \item Risk scores must be within their defined ranges
+  \item Principal and Interest Collected must not exceed loan amount plus total expected interest
+\end{itemize}
+
+\section{Calculated Fields}
+The following fields are calculated based on other inputs:
+\begin{itemize}
+  \item Loan to Value (LTV) Ratio = Outstanding Balance / Current Property Value
+  \item Days Past Due = Snapshot Date - Last Payment Date (if in arrears)
+  \item Total Collected = Principal Collected + Interest Collected
+\end{itemize}
+
+\section{Usage Notes}
+\begin{itemize}
+  \item All monetary values should be entered in the local currency
+  \item Dates should be entered using a date picker where available
+  \item Status updates should trigger appropriate validations
+  \item System should maintain audit trail of changes to key fields
+\end{itemize}
+
+\section{Security Considerations}
+\begin{itemize}
+  \item Loan and Member IDs must be encrypted in storage and display
+  \item Personal information must be handled according to data protection regulations
+  \item Access to payment history should be role-restricted
+  \item All data modifications must be logged with user ID and timestamp
+\end{itemize}
+
+\end{document}

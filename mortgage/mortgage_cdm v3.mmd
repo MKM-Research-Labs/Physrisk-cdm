@@ -1,0 +1,62 @@
+%%{
+  init: {
+    'graph': {
+      'rankdir': 'TB',
+      'nodesep': 10,
+      'ranksep': 20,
+      'splines': 'orthogonal',
+      'pack': true,
+      'edgesep': 10,
+      'marginx': 5,
+      'marginy': 5,
+      'compound': true
+    }
+  }
+}%%
+
+graph TB
+    %% Root Node
+    Mortgage
+
+    %% Level 1 Nodes
+    Mortgage --> MortgageHeader[Header]
+    Mortgage --> Application
+    Mortgage --> FinancialTerms
+    Mortgage --> Features
+    Mortgage --> CurrentStatus
+    Mortgage --> Regulatory
+    
+    %% Level 2 Nodes with Fields
+    MortgageHeader --> HeaderFields["• LoanID<br>• MemberID<br>• UPRN<br>• USRN<br>• currency"]
+    Application --> AppFields["• ApplicationDate<br>• PreApprovalRequest<br>• ApplicationChannel<br>• DenialReason<br>• LoanPurpose<br>• OccupancyType"]
+    FinancialTerms --> FinanceFields["• OriginalLoan<br>• OriginalTerm<br>• OriginalLendingRate<br>• OriginalLTV<br>• MaturityDate"]
+    Features --> FeatureFields["• MortgageType<br>• PaymentFrequency<br>• PortabilityFlag<br>• FirstTimeBuyerFlag<br>• InterestOnlyPayment"]
+    CurrentStatus --> StatusFields["• LatestStatus<br>• OutstandingBalance<br>• CurrentLTV<br>• CurrentLendingRate<br>• InArrearsFlag"]
+    
+    %% Regulatory Section and its subsections
+    Regulatory --> Common
+    Regulatory --> MCOB
+    Regulatory --> HMDA
+
+    Common --> CommonFields["• BusinessOrCommercialPurpose<br>• AdvisedFlag<br>• ExecutionOnlyFlag<br>• VulnerableCustomerFlag"]
+    MCOB --> MCOBFields["• MMRCompliantFlag<br>• ESISProvidedDate<br>• CoolingOffPeriodDays<br>• StressTestCompliantFlag"]
+    HMDA --> HMDAFields["• HMDAReportableFlag<br>• HMDALoanType<br>• HMDAHOEPAStatus<br>• HMDARateSpread"]
+    
+    %% Example Values in Green Boxes
+    HeaderFields --> HeaderValues["• M123456<br>• B789012<br>• 100023336785<br>• 8400123<br>• GBP"]
+    AppFields --> AppValues["• 15/01/2024<br>• Preapproval<br>• Retail<br>• None<br>• Purchase<br>• PrimaryResidence"]
+    FinanceFields --> FinanceValues["• 280000<br>• 300<br>• 3.45<br>• 80<br>• 2053-01-15"]
+    FeatureFields --> FeatureValues["• Residential<br>• Monthly<br>• TRUE<br>• TRUE<br>• FALSE"]
+    StatusFields --> StatusValues["• Current<br>• 255000<br>• 72.85<br>• 3.45<br>• FALSE"]
+    CommonFields --> CommonValues["• FALSE<br>• TRUE<br>• FALSE<br>• FALSE"]
+    MCOBFields --> MCOBValues["• TRUE<br>• 15/01/2024<br>• 14<br>• TRUE"]
+    HMDAFields --> HMDAValues["• TRUE<br>• Conventional<br>• FALSE<br>• 2.25"]
+    
+    %% Styling
+    classDef header fill:#ffb6c1,stroke:#333
+    classDef fields fill:#e6e6fa,stroke:#333
+    classDef values fill:#98fb98,stroke:#333
+    
+    class Mortgage,MortgageHeader,Application,FinancialTerms,Features,CurrentStatus,Regulatory,Common,MCOB,HMDA header
+    class HeaderFields,AppFields,FinanceFields,FeatureFields,StatusFields,CommonFields,MCOBFields,HMDAFields fields
+    class HeaderValues,AppValues,FinanceValues,FeatureValues,StatusValues,CommonValues,MCOBValues,HMDAValues values

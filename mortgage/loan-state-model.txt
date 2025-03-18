@@ -1,0 +1,92 @@
+namespace com.loan.model {
+    type LoanState {
+        // Core loan reference
+        loan Loan (1..1)
+        
+        // Historical tracking
+        observationHistory ObservationHistory (0..*) <"History of loan observations/reviews">
+        valuationHistory ValuationHistory (0..*) <"History of property/collateral valuations">
+        paymentHistory PaymentHistory (0..*) <"History of loan payments">
+        modificationHistory ModificationHistory (0..*) <"History of loan modifications">
+        
+        // Current state
+        state LoanStateEnum (1..1) <"Current state of the loan (active, defaulted, etc)">
+        
+        // Core components similar to TradeState
+        account Account (0..1) <"Account details for loan servicing">
+        clearedDate date (0..1) <"Date when loan was cleared/settled">
+        collateral Collateral (1..1) <"Property and other collateral details">
+        contractDetails LoanContractDetails (1..1) <"Loan agreement details">
+        executionDetails ExecutionDetails (1..1) <"Details of loan execution/origination">
+        
+        // Party information
+        party Party (1..*) <"Parties involved in the loan">
+        partyRole PartyRole (1..*) <"Roles of the parties (borrower, lender, guarantor)">
+        
+        // Loan specific details
+        loanProduct LoanProduct (1..1) <"Type and characteristics of the loan">
+        originationDate date (1..1) <"Date when loan was originated">
+        loanIdentifier string (1..1) <"Unique identifier for the loan">
+    }
+
+    type ObservationHistory {
+        observationDate date (1..1)
+        observer Party (1..1)
+        observations string (0..*)
+        riskAssessment RiskAssessment (0..1)
+    }
+
+    type ValuationHistory {
+        valuationDate date (1..1)
+        valuationType ValuationType (1..1)
+        value Money (1..1)
+        valuator Party (1..1)
+    }
+
+    type PaymentHistory {
+        paymentDate date (1..1)
+        paymentAmount Money (1..1)
+        paymentType PaymentTypeEnum (1..1)
+        status PaymentStatusEnum (1..1)
+    }
+
+    type ModificationHistory {
+        modificationDate date (1..1)
+        modificationType ModificationTypeEnum (1..1)
+        oldTerms LoanTerms (1..1)
+        newTerms LoanTerms (1..1)
+        reason string (0..1)
+    }
+
+    enum LoanStateEnum {
+        PENDING_APPROVAL
+        APPROVED
+        ACTIVE
+        IN_ARREARS
+        DEFAULTED
+        FORECLOSURE
+        PAID_OFF
+        CANCELLED
+    }
+
+    enum PaymentTypeEnum {
+        SCHEDULED_PAYMENT
+        EXTRA_PAYMENT
+        LATE_PAYMENT
+        PENALTY_PAYMENT
+    }
+
+    enum PaymentStatusEnum {
+        SCHEDULED
+        PAID
+        MISSED
+        PARTIAL
+    }
+
+    enum ModificationTypeEnum {
+        RATE_MODIFICATION
+        TERM_EXTENSION
+        PAYMENT_REDUCTION
+        PRINCIPAL_FORBEARANCE
+    }
+}

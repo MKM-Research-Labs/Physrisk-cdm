@@ -1,0 +1,46 @@
+flowchart TD
+    A[product] --> B[taxonomy]
+    A --> C[economicTerms]
+    A --> D[meta]
+    
+    B --> B1[source: CFI]
+    B --> B2[value]
+    B2 --> B2a[name]
+    B2a --> B2a1[value: LRSTXD]
+    
+    C --> C1[effectiveDate]
+    C --> C2[payout]
+    C --> C3[terminationDate]
+    
+    C1 --> C1a[adjustableDate]
+    C1a --> C1a1[unadjustedDate: 2023-02-16]
+    
+    C2 --> C2a[interestRatePayout]
+    C2 --> C2b[assetPayout]
+    
+    C2a --> C2a1[payerReceiver]
+    C2a --> C2a2[priceQuantity]
+    C2a --> C2a3[dayCountFraction]
+    C2a --> C2a4[rateSpecification]
+    
+    C2a4 --> C2a4a[fixedRate]
+    C2a4a --> C2a4a1[rateSchedule]
+    C2a4a1 --> C2a4a1a[price]
+    C2a4a1a --> C2a4a1a1[value: 0.0393]
+    
+    C2b --> C2b1[buyerSeller]
+    C2b --> C2b2[collateralProvisions]
+    C2b --> C2b3[durationType]
+    C2b --> C2b4[assetPayoutLeg]
+    C2b --> C2b5[securityInformation]
+    
+    C2b2 --> C2b2a[collateralType: CASH]
+    C2b2 --> C2b2b[marginPercentage: 0.98]
+    
+    C2b5 --> C2b5a[security]
+    C2b5a --> C2b5a1[identifier]
+    C2b5a1 --> C2b5a1a[ISIN: GB00B24FF097]
+    C2b5a --> C2b5a2[securityType: DEBT]
+    
+    C3 --> C3a[adjustableDate]
+    C3a --> C3a1[unadjustedDate: 2023-02-17]

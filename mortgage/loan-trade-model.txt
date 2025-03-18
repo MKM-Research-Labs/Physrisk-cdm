@@ -1,0 +1,98 @@
+namespace com.loan.model {
+    type LoanTrade {
+        // Core trade details
+        account Account (0..1) <"Settlement/payment account details">
+        clearedDate date (0..1) <"Date when loan purchase was cleared">
+        
+        // Documentation & execution
+        collateral Collateral (1..1) <"Underlying property and other collateral details">
+        contractDetails LoanContractDetails (1..1) <"Purchase agreement details">
+        executionDetails ExecutionDetails (1..1) <"Details of the loan purchase execution">
+        
+        // Party information
+        party Party (1..*) <"Parties involved in loan purchase">
+        partyRole PartyRole (1..*) <"Roles in transaction (buyer/seller)">
+        
+        // Core trade elements
+        tradableLoan TradableLoan (1..1) <"Details of the loan being traded">
+        tradeDate date (1..1) <"Date of loan purchase agreement">
+        tradeIdentifier string (1..1) <"Unique identifier for this loan purchase">
+        tradeTime time (0..1) <"Time of trade execution">
+    }
+
+    type TradableLoan {
+        // Key identifiers and structure
+        adjustment Adjustment (0..1) <"Price/term adjustments for the trade">
+        ancillaryParty Party (0..*) <"Other involved parties (servicers, trustees)">
+        counterparty Party (1..1) <"Main counterparty in trade">
+        
+        // The actual loan product
+        product LoanProduct (1..1) <"Underlying loan details">
+        tradeLot LoanLot (0..1) <"Details if part of larger loan portfolio">
+    }
+
+    type LoanProduct {
+        // Core loan details
+        loanType LoanTypeEnum (1..1)
+        originalBalance Money (1..1)
+        currentBalance Money (1..1)
+        interestRate InterestRate (1..1)
+        term Period (1..1)
+        
+        // Property/collateral details
+        propertyType PropertyTypeEnum (1..1)
+        propertyValue Money (1..1)
+        propertyAddress Address (1..1)
+        
+        // Performance data
+        paymentHistory PaymentHistory (0..*)
+        creditScore number (0..1)
+        loanToValue number (1..1)
+        debtToIncome number (0..1)
+    }
+
+    type LoanContractDetails {
+        purchasePrice Money (1..1)
+        settlementDate date (1..1)
+        transferTerms TransferTerms (1..1)
+        representations LoanRepresentations (1..1)
+        warranties LoanWarranties (1..1)
+    }
+
+    type ExecutionDetails {
+        executionType ExecutionTypeEnum (1..1)
+        executionVenue string (0..1)
+        executionDateTime dateTime (1..1)
+        executingParties Party (1..*)
+    }
+
+    enum LoanTypeEnum {
+        CONVENTIONAL
+        FHA
+        VA
+        JUMBO
+        NON_QM
+    }
+
+    enum PropertyTypeEnum {
+        SINGLE_FAMILY
+        MULTI_FAMILY
+        CONDO
+        TOWNHOUSE
+        MANUFACTURED
+    }
+
+    type TransferTerms {
+        servingRights boolean (1..1) <"Whether servicing rights are included">
+        servicingFees Money (0..1)
+        recourse boolean (1..1)
+        putbackPeriod Period (0..1)
+    }
+
+    type LoanLot {
+        lotIdentifier string (1..1)
+        lotSize int (1..1)
+        poolIdentifier string (0..1)
+        securitizationEligible boolean (0..1)
+    }
+}
