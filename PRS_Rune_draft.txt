@@ -1,0 +1,186 @@
+// Physical Risk Swap CDM Implementation in Rune (Rust-inspired)
+struct PhysicalSwap {
+    header,
+    leg_data,
+    schedule_data,
+    gauge_set,
+}
+
+struct Header {
+    trade_type,           // "ParametricGaugeBasket"
+    counter_party,        // "001B456BCDEFGH67XY89"
+    party_id,             // "549300A08LH2961IPN13"
+    valuation_date,       // Date string: "2024-12-19 00:00:00"
+    gauge_set_id,         // "ABC1234"
+    protection_start,     // Date string: "2024-12-19 00:00:00"
+    settles_accrual,      // boolean: true/false
+    pays_at_default_time, // boolean: true/false
+}
+
+struct LegData {
+    leg_type,             // "Fixed" or "Float"
+    payer,                // boolean: true/false
+    currency,             // "USD"
+    notional,             // 100000000
+    day_counter,          // "A360"
+    payment_convention,   // "F"
+    fixed_leg_rate,       // 0.00114
+}
+
+struct ScheduleData {
+    start_date,           // "2024-12-19 00:00:00"
+    end_date,             // "2029-12-19 00:00:00"
+    tenor,                // "3M"
+    calendar,             // "US"
+    convention,           // "F"
+    term_convention,      // "F"
+    rule,                 // "PRS2025(?)"
+    end_of_month,         // boolean
+    first_date,           // "2024-12-21 00:00:00"
+    last_date,            // "2029-12-22 00:00:00"
+}
+
+struct GaugeSet {
+    gauge_set,            // "ThamesRiver"
+    gauge_basket_size,    // 90
+    gauges,               // Array of Gauge objects
+}
+
+struct Gauge {
+    gauge_id,                // "GAUGE-d16fa17b"
+    payout_severe_flood,     // 100000
+}
+
+impl PhysicalSwap {
+    fn new(trade_type, counter_party, party_id) {
+        PhysicalSwap {
+            header: Header {
+                trade_type,
+                counter_party, 
+                party_id,
+                valuation_date: "",
+                gauge_set_id: "",
+                protection_start: "",
+                settles_accrual: false,
+                pays_at_default_time: false,
+            },
+            leg_data: LegData {
+                leg_type: "Fixed",
+                payer: false,
+                currency: "USD",
+                notional: 0,
+                day_counter: "A360",
+                payment_convention: "F",
+                fixed_leg_rate: 0.0,
+            },
+            schedule_data: ScheduleData {
+                start_date: "",
+                end_date: "",
+                tenor: "3M",
+                calendar: "US",
+                convention: "F",
+                term_convention: "F",
+                rule: "",
+                end_of_month: false,
+                first_date: "",
+                last_date: "",
+            },
+            gauge_set: GaugeSet {
+                gauge_set: "",
+                gauge_basket_size: 0,
+                gauges: [],
+            },
+        }
+    }
+    
+    fn set_header_data(self, valuation_date, gauge_set_id, protection_start, settles_accrual, pays_at_default_time) {
+        self.header.valuation_date = valuation_date;
+        self.header.gauge_set_id = gauge_set_id;
+        self.header.protection_start = protection_start;
+        self.header.settles_accrual = settles_accrual;
+        self.header.pays_at_default_time = pays_at_default_time;
+    }
+    
+    fn set_leg_data(self, leg_type, payer, currency, notional, fixed_leg_rate) {
+        self.leg_data.leg_type = leg_type;
+        self.leg_data.payer = payer;
+        self.leg_data.currency = currency;
+        self.leg_data.notional = notional;
+        self.leg_data.fixed_leg_rate = fixed_leg_rate;
+    }
+    
+    fn add_gauge(self, gauge_id, payout_severe_flood) {
+        let gauge = Gauge {
+            gauge_id,
+            payout_severe_flood,
+        };
+        self.gauge_set.gauges.push(gauge);
+    }
+    
+    fn validate(self) {
+        let mut errors = [];
+        
+        if self.header.trade_type == "" {
+            errors.push("Trade type is required");
+        }
+        if self.leg_data.notional <= 0 {
+            errors.push("Notional must be positive");
+        }
+        if self.gauge_set.gauges.len() == 0 {
+            errors.push("At least one gauge must be defined");
+        }
+        
+        errors
+    }
+    
+    fn calculate_max_payout(self) {
+        let mut total_payout = 0;
+        for gauge in self.gauge_set.gauges {
+            total_payout += gauge.payout_severe_flood;
+        }
+        total_payout
+    }
+    
+    fn summary(self) {
+        println!("=== Physical Risk Swap Summary ===");
+        println!("Trade Type: {}", self.header.trade_type);
+        println!("Counter Party: {}", self.header.counter_party);
+        println!("Currency: {}", self.leg_data.currency);
+        println!("Notional: {}", self.leg_data.notional);
+        println!("Max Payout: {}", self.calculate_max_payout());
+        
+        let validation_errors = self.validate();
+        if validation_errors.len() > 0 {
+            println!("⚠️  Validation Errors:");
+            for error in validation_errors {
+                println!("  - {}", error);
+            }
+        } else {
+            println!("✅ Validation passed");
+        }
+    }
+}
+
+pub fn create_sample_swap() {
+    let swap = PhysicalSwap::new(
+        "ParametricGaugeBasket",
+        "001B456BCDEFGH67XY89", 
+        "549300A08LH2961IPN13"
+    );
+    
+    swap.set_header_data(
+        "2024-12-19 00:00:00",
+        "ABC1234",
+        "2024-12-19 00:00:00",
+        true,
+        true
+    );
+    
+    swap.set_leg_data("Fixed", true, "USD", 100000000, 0.00114);
+    
+    swap.add_gauge("GAUGE-d16fa17b", 100000);
+    swap.add_gauge("GAUGE-a23bc45d", 150000);
+    
+    swap.summary();
+    swap
+}
